@@ -7,14 +7,20 @@
       </p>
     </div>
     <div v-else>
-      <ul>
-        <li v-for="post in posts" :key="post.id">
-          <h3>{{ post.title[0].toUpperCase() + post.title.substring(1) }}</h3>
-            <p>Id de l'utilisateur : {{ post.userId }}</p>
-            <p>Id du post : {{ post.id }}</p>
-            <p>Corps du post : {{ post.body }}</p>
-        </li>
-      </ul>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Id</th>
+                <th>Id de l'utilisateur</th>
+                <th>Description</th>
+            </tr>
+            <tr v-for="post in posts" :key="post.id">
+                <td>{{ post.title[0].toUpperCase() + post.title.substring(1) }}</td>
+                <td>{{ post.id }}</td>
+                <td>{{ post.userId }}</td>
+                <td>{{ post.body }}</td>
+            </tr>
+        </table>
     </div>
   </div>
 </template>
@@ -30,7 +36,9 @@ export default {
     }
   },
   mounted() {
-    axios.get('https://jsonplaceholder.typicode.com/posts')
+    axios.get('https://jsonplaceholder.typicode.com/posts?' + new URLSearchParams({
+        _limit: 10
+    }))
       .then(res => {
         this.posts = res.data
       })
@@ -59,4 +67,19 @@ export default {
   padding-left: 0;
 }
 
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
 </style>
